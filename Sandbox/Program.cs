@@ -1,33 +1,91 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 
 namespace Sandbox
 {
-    class Program
+    public class Counter
     {
-        static void Main(string[] args)
+        private double? _percentage;
+
+        public Counter(string name, int count)
         {
-            int yesCounter = 1;
-            int noCounter = 2;
+            Name = name;
+            Count = count;
+        }
 
-            int total = yesCounter + noCounter;
+        public string Name { get; }
+        public int Count { get; private set; }
 
-            var yesPercent = yesCounter / total * 100.0;
-            var noPercent = noCounter / total * 100.0;
+        public double GetPercent(int total) => _percentage ??
+            (_percentage = Math.Round(Count * 100.0 / total, 2)).Value;
 
-            Console.WriteLine($"Yes Counts: {yesCounter}, Percentage: {yesPercent}%");
-            Console.WriteLine($"No Counts: {noCounter}, Percentage: {noPercent}%");
+        public void AddExcess(double excess) => _percentage += excess;
 
-            if (yesCounter > noCounter)
+        public void Increment() => Count++;
+    }
+
+    public class CounterManager
+    {
+        public CounterManager(params Counter[] counters)
+        {
+            Counters = new List<Counter>(counters);
+        }
+
+        public List<Counter> Counters { get; set; }
+
+        public int Total() => Counters.Sum(x => x.Count);
+
+        public double TotalPercentage() => Counters.Sum(x => x.GetPercent(Total()));
+
+        public void AnnounceWinner()
+        {
+            var excess = Math.Round(100 - TotalPercentage(), 2);
+
+            Console.WriteLine($"Excess: {excess}");
+
+            var biggestAmountOfVotes = Counters.Max(x => x.Count);
+
+            var winners = Counters.Where(x => x.Count == biggestAmountOfVotes).ToList();
+
+            if (winners.Count == 1)
             {
-                Console.WriteLine($"Yes Won");
-            }
-            else if (noCounter > yesCounter)
-            {
-                Console.WriteLine($"No Won");
+                var winner = winners.First();
+                winner.AddExcess(excess);
+                Console.WriteLine($"{winner.Name} Won!");
             }
             else
             {
-                Console.WriteLine($"Draw");
+                if (winners.Count != Counters.Count)
+                {
+                    var lowestAmountOfVotes = Counters.Min(x => x.Count);
+                    var loser = Counters.Where(x => x.Count == lowestAmountOfVotes).First();
+                    loser.AddExcess(excess);
+                }
+                Console.WriteLine(string.Join(" -DRAW- ", winners.Select(x => x.Name)));
+            }
+
+            foreach (var c in Counters)
+            {
+                Console.WriteLine($"{c.Name} Counts: {c.Count}, Percentage: {c.GetPercent(Total())}%");
+            }
+
+            Console.WriteLine($"Total Percentage: {Math.Round(TotalPercentage(), 2)}%");
+        }
+
+        internal class Program
+        {
+            private static void Main(string[] args)
+            {
+                var yes = new Counter("Yes", 4);
+                var no = new Counter("No", 4);
+                var maybe = new Counter("Maybe", 4);
+                var hopefully = new Counter("Hopefully", 4);
+
+                var manager = new CounterManager(yes, no, maybe, hopefully);
+
+                manager.AnnounceWinner();
             }
         }
     }
