@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.EFCore", "Sandbox.E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VotingSystem", "VotingSystem\VotingSystem.csproj", "{EA49FB8E-32ED-4827-8FF9-1C47F4FF3F6D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VotingSystem.Application", "VotingSystem.Application\VotingSystem.Application.csproj", "{E80B2A1C-FE4B-4B6F-86EE-A7C7E644A52B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VotingSystem.Application.Tests", "VotingSystem.Application.Tests\VotingSystem.Application.Tests.csproj", "{6E473082-D55F-4BBD-A2A8-0AA1FC35C4F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{EA49FB8E-32ED-4827-8FF9-1C47F4FF3F6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA49FB8E-32ED-4827-8FF9-1C47F4FF3F6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA49FB8E-32ED-4827-8FF9-1C47F4FF3F6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E80B2A1C-FE4B-4B6F-86EE-A7C7E644A52B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E80B2A1C-FE4B-4B6F-86EE-A7C7E644A52B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E80B2A1C-FE4B-4B6F-86EE-A7C7E644A52B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E80B2A1C-FE4B-4B6F-86EE-A7C7E644A52B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E473082-D55F-4BBD-A2A8-0AA1FC35C4F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E473082-D55F-4BBD-A2A8-0AA1FC35C4F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E473082-D55F-4BBD-A2A8-0AA1FC35C4F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E473082-D55F-4BBD-A2A8-0AA1FC35C4F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
