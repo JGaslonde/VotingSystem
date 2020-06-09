@@ -46,21 +46,54 @@ namespace VotingSystem.Database.Tests
                 }
             }
         }
-    }
 
-    internal class VotingSystemPersistance : IVotingSystemPersistance
-    {
-        private AppDbContext _ctx;
-
-        public VotingSystemPersistance(AppDbContext ctx)
+        [Fact]
+        public void PersistsVote()
         {
-            _ctx = ctx;
+            var vote = new Vote { UserId = "user", CounterId = 1 };
+
+            using (var ctx = DbContextFactory.Create(nameof(PersistsVote)))
+            {
+                var persistance = new VotingSystemPersistance(ctx);
+                persistance.SaveVote(vote);
+            }
+
+            using (var ctx = DbContextFactory.Create(nameof(PersistsVote)))
+            {
+                var savedVote = ctx.Votes.Single();
+                Equal(vote.UserId, savedVote.UserId);
+                Equal(vote.CounterId, savedVote.CounterId);
+            }
         }
 
-        public void SaveVotingPoll(VotingPoll votingPoll)
+        [Fact]
+        public void VoteExists_ReturnsFalseWhenNoVote()
         {
-            _ctx.VotingPolls.Add(votingPoll);
-            _ctx.SaveChanges();
+            var vote = new Vote { UserId = "user", CounterId = 1 };
+
+            using (var ctx = DbContextFactory.Create(nameof(VoteExists_ReturnsFalseWhenNoVote)))
+            {
+                var persistance = new VotingSystemPersistance(ctx);
+                False(persistance.VoteExists(vote));
+            }
+        }
+
+        [Fact]
+        public void VoteExists_ReturnsTrueWhenVoteExists()
+        {
+            var vote = new Vote { UserId = "user", CounterId = 1 };
+
+            using (var ctx = DbContextFactory.Create(nameof(VoteExists_ReturnsTrueWhenVoteExists)))
+            {
+                ctx.Votes.Add(vote);
+                ctx.SaveChanges();
+            }
+
+            using (var ctx = DbContextFactory.Create(nameof(VoteExists_ReturnsTrueWhenVoteExists)))
+            {
+                var persistance = new VotingSystemPersistance(ctx);
+                True(persistance.VoteExists(vote));
+            }
         }
     }
 }
